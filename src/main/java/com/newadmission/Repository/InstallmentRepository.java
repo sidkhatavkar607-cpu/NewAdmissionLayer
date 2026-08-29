@@ -140,4 +140,18 @@ public interface InstallmentRepository extends JpaRepository<Installment, Long> 
             @Param("course") String course, @Param("feesStatus") String feesStatus,
             @Param("collectionType") String collectionType, @Param("branchCode") String branchCode
     );
+
+    @Query("""
+                SELECT i
+                FROM Installment i
+                WHERE UPPER(i.status) = 'PAID'
+                  AND i.installmentDate BETWEEN :startDate AND :endDate
+                  AND i.branchCode = :branchCode
+                ORDER BY i.installmentDate DESC
+            """)
+    List<Installment> findPaidCollections(
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate,
+            @Param("branchCode") String branchCode
+    );
 }

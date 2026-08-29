@@ -178,4 +178,19 @@ public interface AdmissionRepository extends JpaRepository<AdmissionForm, Long> 
     @Query("SELECT a FROM AdmissionForm a WHERE a.parentEmail = :parentEmail AND a.parentEmail IS NOT NULL")
     Optional<AdmissionForm> findByParentEmail(@Param("parentEmail") String parentEmail);
 
+    @Query("""
+                SELECT a
+                FROM AdmissionForm a
+                WHERE a.installments IS EMPTY
+                  AND a.paidFees > 0
+                  AND a.paymentDate BETWEEN :startDate AND :endDate
+                  AND a.branchCode = :branchCode
+                ORDER BY a.paymentDate DESC
+            """)
+    List<AdmissionForm> findOneTimeCollections(
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate,
+            @Param("branchCode") String branchCode
+    );
+
 }

@@ -1,25 +1,28 @@
 package com.newadmission.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.Objects;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class FeeFilterSummaryDTO {
-    private Double totalFees;
-    private Double paidFees;
-    private Double pendingFees;
+public record FeeFilterSummaryDTO(
+        Double totalFees,
+        Double paidFees,
+        Double pendingFees
+) {
+    // Compact constructor to guarantee fields are never null
+    public FeeFilterSummaryDTO {
+        totalFees = Objects.requireNonNullElse(totalFees, 0.0);
+        paidFees = Objects.requireNonNullElse(paidFees, 0.0);
+        pendingFees = Objects.requireNonNullElse(pendingFees, 0.0);
+    }
 
-    // Helper method to merge Installment data with Direct Admission data
-    public void add(FeeFilterSummaryDTO other) {
-        if (other != null) {
-            this.totalFees += other.getTotalFees();
-            this.paidFees += other.getPaidFees();
-            this.pendingFees += other.getPendingFees();
+    // Merges data and returns a NEW immutable instance
+    public FeeFilterSummaryDTO add(FeeFilterSummaryDTO other) {
+        if (other == null) {
+            return this;
         }
+        return new FeeFilterSummaryDTO(
+                this.totalFees() + other.totalFees(),
+                this.paidFees() + other.paidFees(),
+                this.pendingFees() + other.pendingFees()
+        );
     }
 }

@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Disable CSRF
                 .cors(cors -> cors.configurationSource(request -> {
                     var config = new org.springframework.web.cors.CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:5173","https://pjsofttech.in")); // Frontend origin
+                    config.setAllowedOrigins(List.of("http://localhost:5173","https://pjsofttech.in","http://localhost:5002")); // Frontend origin
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE","PATCH","OPTIONS")); // HTTP methods
                     config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
                     config.setAllowCredentials(true);
