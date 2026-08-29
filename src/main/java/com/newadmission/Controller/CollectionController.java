@@ -30,6 +30,8 @@ public class CollectionController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate endDate,
 
+            @RequestParam String role,
+            @RequestParam String email,
             @RequestParam
             String branchCode
     ) {
@@ -37,6 +39,7 @@ public class CollectionController {
         return collectionService.getCollections(
                 startDate,
                 endDate,
+                role, email,
                 branchCode
         );
     }

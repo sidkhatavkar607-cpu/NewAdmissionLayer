@@ -10,6 +10,8 @@ public interface CollectionService {
     List<CollectionResponse> getCollections(
             LocalDate startDate,
             LocalDate endDate,
+            String role,
+            String email,
             String branchCode
     );
 }

@@ -21,14 +21,21 @@ public class CollectionServiceImpl implements CollectionService {
 
     private final AdmissionRepository admissionRepository;
     private final InstallmentRepository installmentRepository;
+    private final StaffService staffService;
 
     @Override
     @Transactional(readOnly = true)
     public List<CollectionResponse> getCollections(
             LocalDate startDate,
             LocalDate endDate,
+            String role,
+            String email,
             String branchCode
     ) {
+
+        if (!staffService.hasPermission(role, email, "GET")) {
+            throw new RuntimeException("You dont have permission to access this resource");
+        }
 
         List<CollectionResponse> collections =
                 new ArrayList<>();
