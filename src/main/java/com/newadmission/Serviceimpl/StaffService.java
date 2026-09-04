@@ -430,4 +430,23 @@ public class StaffService {
                 .bodyToFlux(WatiTemplateDTO.class)
                 .collectList().block();
     }
+
+    public List<ClientBranchDTO> getAllClientBranchDetailsByInstituteEmail(String instituteEmail) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/getBrachbyInstituteEmail")
+                        .queryParam("instituteEmail", instituteEmail)
+                        .build())
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response ->
+                        response.bodyToMono(String.class)
+                                .flatMap(error -> Mono.error(new RuntimeException("Fetching branch details Failed: " + error)))
+                )
+                .bodyToMono(new ParameterizedTypeReference<List<ClientBranchDTO>>() {})
+                .block();
+    }
 }

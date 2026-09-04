@@ -1,8 +1,8 @@
 package com.newadmission.Controller;
 
 import com.newadmission.DTO.BranchAddressDTO;
+import com.newadmission.DTO.ClientBranchDTO;
 import com.newadmission.DTO.InstituteLoginResponse;
-import com.newadmission.DTO.RazorpayVerifyRequest;
 import com.newadmission.JWT.LoginRequest;
 import com.newadmission.JWT.LoginResponse;
 import com.newadmission.Serviceimpl.StaffService;
@@ -61,6 +61,13 @@ public class StaffController
     {
         Map<String, String> branchMap = staffLoginService.getBranchCodesWithNameByInstituteEmail(instituteEmail);
         return ResponseEntity.ok(branchMap);
+    }
+
+    @GetMapping("/branchDetails/insitituteEmail")
+    public ResponseEntity<List<ClientBranchDTO>> getAllClientBranchDetailsByInstituteEmail(@RequestParam String instituteEmail)
+    {
+        List<ClientBranchDTO> branchDetailsByInstituteEmail = staffLoginService.getAllClientBranchDetailsByInstituteEmail(instituteEmail);
+        return ResponseEntity.ok(branchDetailsByInstituteEmail);
     }
 
     @GetMapping("/getBranchAddress")
